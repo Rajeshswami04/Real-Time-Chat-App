@@ -1,10 +1,12 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import { ENV } from './env.js';
+
 
 export const generateToken = (userId, res) => {
     //token
 
-    const {JWT_SECRET} = process.env;
+    const {JWT_SECRET} = ENV;
     if (!JWT_SECRET) {
         throw new Error('JWT_SECRET is not defined in environment variables');
     }
@@ -17,7 +19,7 @@ export const generateToken = (userId, res) => {
     res.cookie("jwt", token, {
         httpOnly: true, //prevent client-side JS access cross site scripting
         maxAge: 30 * 24 * 60 * 60 * 1000, //30 days
-        secure: process.env.NODE_ENV === "production",
+        secure: ENV.NODE_ENV === "production",
         sameSite: "strict", //prevent CSRF
     });
     
