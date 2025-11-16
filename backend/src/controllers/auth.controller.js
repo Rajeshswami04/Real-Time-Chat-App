@@ -3,6 +3,8 @@ import bcrypt from 'bcryptjs';
 import { generateToken } from '../lib/utils.js';
 import  { sendWelcomeEmail } from '../emails/emailHandler.js';
 import { ENV } from '../lib/env.js';
+import cloudinary from '../lib/cloudinary.js';
+
 
 export const signup = async (req, res) => {
   const {fullName, email, password} = req.body;
@@ -55,10 +57,6 @@ if(newUser){
 }
 }
 
-
-
-
-
 export const login =async (req, res) => {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -85,8 +83,26 @@ export const login =async (req, res) => {
        return res.status(500).json({message:"Server error"});
     }
 };
+
 export const logout = async  (req, res) => {
    res.cookie("jwt","",{maxAge:0});
    res.status(200).json({message:"Logged out successfully"});
 };
 
+export const updateProfile =async (req,res)=>{
+try{
+    const {profilePic}=req.body;
+    if(!profilePic){return res.status(400).json({message:"profile picture is required"});}
+    const userid=req.user._id;
+    const uploadResponse=await cloudinary.uploader.upload(profilePic);
+    const updateUser=await User.findByIdAndUpdate(userid,{profilePic:uploadResponse.secure_url},{new:true});
+    return res.status(200).json({
+        _id:updateUser._id,
+        fullName:updateUser.fullName,
+        email:updateUser.email,
+        profilePic:updateUser.profilePic,
+    });
+}catch(error){
+
+}
+    }
