@@ -4,12 +4,13 @@ const router = express.Router();
 import { getAllContacts } from "../controllers/message.controller.js";
 import { getMessagesByUserId } from "../controllers/message.controller.js";
 import {sendMessage } from "../controllers/message.controller.js";
-
-
-router.get("/contacts",protectRoute,getAllContacts);
-// router.get("/chats",getChatPartners);
-router.get("/:id",protectRoute,getMessagesByUserId);
-router.post("/send/:id",protectRoute,sendMessage);
+import { getChatPartners } from "../controllers/message.controller.js";
+import {arcjetProtection} from "../middleware/arcjet.middleware.js";
+router.use(arcjetProtection,protectRoute);
+router.get("/contacts",getAllContacts);
+router.get("/chats",getChatPartners);
+router.get("/:id",getMessagesByUserId);
+router.post("/send/:id",sendMessage);
 
 
 

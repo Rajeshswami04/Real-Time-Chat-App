@@ -5,9 +5,9 @@ import { logout } from "../controllers/auth.controller.js";
 import { signup } from "../controllers/auth.controller.js";
 import { updateProfile } from "../controllers/auth.controller.js";
 import { protectRoute } from "../middleware/auth.middleware.js";
-import { arcjetMiddleware} from "../middleware/arcjet.middleware.js";
+import { arcjetProtection } from "../middleware/arcjet.middleware.js";
 
-// router.use(arcjetMiddleware);
+router.use(arcjetProtection);
 router.post("/signup",signup);
 
 router.post("/login",login);
