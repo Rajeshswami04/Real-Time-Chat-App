@@ -16,11 +16,12 @@ const aj = arcjet({
     }),
     slidingWindow({
       mode: "LIVE",
-     max: 100, // Allow max 100 requests
-      interval: 60, // Refill every 10 seconds
+     max: 100, 
+      interval: 60, 
     }),
   ],
 });
 
 
 export default aj;
+
